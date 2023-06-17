@@ -4,46 +4,6 @@
 
 ### 搭建 Hadoop 和 Spark 集群
 
-#### 搭建 Hadoop
-
-准备工作：
-
-1. 选定一台机器作为 Master
-2. 在 Master 节点上配置 hadoop 用户、安装 SSH server、安装 Java 环境
-3. 在 Master 节点上安装 Hadoop，并完成配置
-4. 在其他 Slave 节点上配置 hadoop 用户、安装 SSH server、安装 Java 环境（可采用脚本分发）
-5. 将 Master 节点上的 `/usr/local/hadoop` 目录复制到其他 Slave 节点上
-6. 在 Master 节点上开启 Hadoop
-
-网络配置：
-1. 搭建 5 台机器组成集群模式，s198hadoop 作为主节点，其余作为从节点。
-   - 10.244.3.85 s198hadoop
-   - 10.244.3.88 s193hadoop
-   - 10.244.3.86 s194hadoop
-   - 10.244.3.69 s195hadoop
-   - 10.244.3.2  s197hadoop
-
-2. 分别修改 5 台虚拟机的 `/etc/hosts` 文件，编写集群节点主机名与 IP 地址的映射关系
-
-3. 集群/分布式模式配置：
-
-   - 集群/分布式模式需要修改 `/usr/local/hadoop/etc/hadoop` 中的 5 个配置文件：`workers`、`core-site.xml`、`hdfs-site.xml`、`mapred-site.xml`、`yarn-site.xml` 文件
-
-   - 在主节点上将公钥传输到从节点，在从节点将 SSH 公钥加入授权
-
-4. 可从 [http://s198hadoop:8088/cluster/](http://s198hadoop:8088/cluster/) 查看 Hadoop 集群
-
-#### 搭建 Spark
-
-1. 集群分布式配置：
-
-   修改 `/usr/local/spark` 文件夹下的 `slaves`、`spark-env.sh` 文件夹
-
-   之后把整个 `/usr/local/spark` 文件夹压缩分发到各个节点
-
-2. 可从 [http://s198hadoop:7077](http://s198hadoop:7077) 查看 Spark 集群
-
-
 ### 任务一 使用简单移动平均法预测股票涨跌幅（Spark core）
 股票数据中共有10只股票的交易信息（Stock文件夹中），每一个文件就是一只股票的信息。本任务随机取其中一只股票作为样本，通过股票的收盘价来建立模型预测股价涨跌幅。
 股价的涨跌幅计算中所用到的价格是每天的收盘价，通过比较当日收盘价与前一天的收盘价，计算两日股价差额与前一日收盘价之比来确定股票的涨跌幅度，计算公式如下所示：
